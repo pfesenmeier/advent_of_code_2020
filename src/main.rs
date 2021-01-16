@@ -1,4 +1,5 @@
 use std::env;
+use std::fs;
 use std::process;
 
 fn main() {
@@ -30,6 +31,7 @@ impl Challenge {
                 .expect("Could not parse a part from arguments");
             Ok((day, part))
         }
+
         match args.len() {
             3 => {
                 let (day, part) =
@@ -44,7 +46,7 @@ impl Challenge {
                 let (day, part) =
                     parse_day_part(&args[1]).expect("Error parsing challenge identifier");
                 let mut input_name: String = day.to_string();
-                input_name.push('-');
+                input_name.push('_');
                 input_name.push_str(&part.to_string());
                 input_name.push_str(".txt");
                 Ok(Challenge {
@@ -61,9 +63,8 @@ impl Challenge {
         let problem_func = self
             .get_problem_func()
             .expect("Could not match problem argument. Try 'day-part' e.g. '1-2'");
-        let file = self.get_file_location();
-
-        let result = problem_func(file);
+        let file = fs::read_to_string(self.get_file_location()).unwrap();
+        let result = problem_func(&file);
 
         println!(
             "The answer to day {} part {} is {}",
@@ -71,8 +72,10 @@ impl Challenge {
         );
     }
 
-    fn get_file_location(&self) -> &str {
-        &self.input_name
+    fn get_file_location(&self) -> String {
+        let mut path = String::from("./input/");
+        path.push_str(&self.input_name);
+        path
     }
 
     fn get_problem_func(&self) -> Option<impl Fn(&str) -> &str> {
@@ -83,6 +86,6 @@ impl Challenge {
     }
 }
 
-fn report_repair_1(_file_name: &str) -> &str {
-    _file_name
+fn report_repair_1(file: &str) -> &str {
+    return file
 }
