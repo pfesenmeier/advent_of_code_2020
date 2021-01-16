@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::process;
+mod report_repair_1;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -46,8 +47,6 @@ impl Challenge {
                 let (day, part) =
                     parse_day_part(&args[1]).expect("Error parsing challenge identifier");
                 let mut input_name: String = day.to_string();
-                input_name.push('_');
-                input_name.push_str(&part.to_string());
                 input_name.push_str(".txt");
                 Ok(Challenge {
                     day,
@@ -80,12 +79,9 @@ impl Challenge {
 
     fn get_problem_func(&self) -> Option<impl Fn(&str) -> &str> {
         match (self.day, self.part) {
-            (1, 1) => Some(report_repair_1),
+            (1, 1) => Some(report_repair_1::run),
             _ => None,
         }
     }
 }
 
-fn report_repair_1(file: &str) -> &str {
-    return file
-}
