@@ -12,25 +12,47 @@ fn main() {
     challenge.run();
 }
 
-struct Challenge<'a> {
+struct Challenge {
     day: u8,
     part: u8,
-    input_name: &'a str,
+    input_name: String,
 }
 
-impl Challenge<'_> {
+impl Challenge {
     fn new(args: &[String]) -> Result<Challenge, &'static str> {
+        fn parse_day_part(day_part: &str) -> Result<(u8, u8), &'static str> {
+            let nums: Vec<&str> = day_part.split(|input: char| !input.is_digit(10)).collect();
+            let day: u8 = nums[0]
+                .parse()
+                .expect("Could not parse a day from arguments");
+            let part: u8 = nums[1]
+                .parse()
+                .expect("Could not parse a part from arguments");
+            Ok((day, part))
+        }
         match args.len() {
             3 => {
-              let nums: Vec<&str> = args[1].split(|input: char| { !input.is_digit(10)}).collect();
-              let day: u8 = nums[0].parse().expect("Could not parse a day from arguments");
-              let part: u8 = nums[1].parse().expect("Could not parse a part from arguments");
-              Ok(Challenge {
-                  day,
-                  part,
-                  input_name: &args[2],
-              })
-            },
+                let (day, part) =
+                    parse_day_part(&args[1]).expect("Error parsing challenge identifier");
+                Ok(Challenge {
+                    day,
+                    part,
+                    input_name: String::from(&args[2]),
+                })
+            }
+            2 => {
+                let (day, part) =
+                    parse_day_part(&args[1]).expect("Error parsing challenge identifier");
+                let mut input_name: String = day.to_string();
+                input_name.push('-');
+                input_name.push_str(&part.to_string());
+                input_name.push_str(".txt");
+                Ok(Challenge {
+                    day,
+                    part,
+                    input_name,
+                })
+            }
             _ => Err("Please provide two arguments"),
         }
     }
@@ -43,11 +65,14 @@ impl Challenge<'_> {
 
         let result = problem_func(file);
 
-        println!("The answer to day {} part {} is {}", self.day, self.part, &result);
+        println!(
+            "The answer to day {} part {} is {}",
+            self.day, self.part, &result
+        );
     }
 
     fn get_file_location(&self) -> &str {
-        self.input_name
+        &self.input_name
     }
 
     fn get_problem_func(&self) -> Option<impl Fn(&str) -> &str> {
@@ -59,5 +84,5 @@ impl Challenge<'_> {
 }
 
 fn report_repair_1(_file_name: &str) -> &str {
-    "42"
+    _file_name
 }
