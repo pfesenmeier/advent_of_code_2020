@@ -3,6 +3,7 @@ use std::fs;
 use std::process;
 mod report_repair_1;
 mod report_repair_2;
+mod password_philosophy_1;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -82,6 +83,7 @@ impl Challenge {
         match (self.day, self.part) {
             (1, 1) => Some(report_repair_1::run as for<'r> fn(&'r str) -> String),
             (1, 2) => Some(report_repair_2::run as for<'r> fn(&'r str) -> String),
+            (2, 1) => Some(password_philosophy_1::run as for<'r> fn(&'r str) -> String),
             _ => None,
         }
     }
