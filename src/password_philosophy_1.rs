@@ -1,16 +1,32 @@
 pub fn run(file: &str) -> String {
     let mut valid_rules: u32 = 0;
     for line in file.lines() {
-        let input: Vec<&str> = line.split(':').collect();
-        let rule = Rule::new(input[0]);
-        let password = input[1].trim();
+        let line = Line::new(line);
 
-        if rule.verify_range(password) {
+        if line.verify_password() {
             valid_rules += 1;
         }
     }
 
     valid_rules.to_string()
+}
+
+struct Line<'a> {
+    rule: Rule,
+    password: &'a str,
+}
+impl Line<'_> {
+    fn new(line: &str) -> Line {
+        let input: Vec<&str> = line.split(':').collect();
+        Line {
+        rule: Rule::new(input[0]),
+        password:  input[1].trim(),
+        }
+    }
+
+    fn verify_password(&self) -> bool {
+        self.rule.verify_range(self.password)
+    }
 }
 
 struct Rule {
