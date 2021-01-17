@@ -77,7 +77,7 @@ impl Challenge {
         path
     }
 
-    fn get_problem_func(&self) -> Option<impl Fn(&str) -> &str> {
+    fn get_problem_func(&self) -> Option<impl Fn(&str) -> String> {
         match (self.day, self.part) {
             (1, 1) => Some(report_repair_1::run),
             _ => None,
