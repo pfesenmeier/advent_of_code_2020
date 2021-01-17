@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::process;
 mod report_repair_1;
+mod report_repair_2;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -79,7 +80,8 @@ impl Challenge {
 
     fn get_problem_func(&self) -> Option<impl Fn(&str) -> String> {
         match (self.day, self.part) {
-            (1, 1) => Some(report_repair_1::run),
+            (1, 1) => Some(report_repair_1::run as for<'r> fn(&'r str) -> String),
+            (1, 2) => Some(report_repair_2::run as for<'r> fn(&'r str) -> String),
             _ => None,
         }
     }
