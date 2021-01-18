@@ -1,17 +1,17 @@
 pub fn run(file: &str) -> String {
     fn sled(hills: &[&str], pos: u32, trees: u32) -> u32 {
         let hill = hills.into_iter().next();
-        
+
         if let None = hill {
           return trees;
         }
         
-        let slope = hill.unwrap();
+        let hill = hill.unwrap();
         let downhill = &hills[1..];
-        let next_pos = || (pos + 3) % slope.len() as u32;
+        let next_pos = || (pos + 3) % hill.len() as u32;
 
         let mut i = 0;
-        for c in slope.chars() {
+        for c in hill.chars() {
             if i == pos && c == '#' {
                 return sled(downhill, next_pos(), trees + 1);
             } else if i == pos {
