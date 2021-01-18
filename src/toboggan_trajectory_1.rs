@@ -2,14 +2,17 @@ pub fn run(file: &str) -> String {
   
   let hills: Vec<&str> = file.split_ascii_whitespace().collect();
   let ski = Ski { right: 3, down: 1 };
-  ski.sled(&hills, 0, 0).to_string()
+  ski.ski(&hills).to_string()
 }
 pub struct Ski {
-    right: u32,
-    down: usize,
+    pub right: u32,
+    pub down: usize,
 }
 
 impl Ski {
+    pub fn ski (&self, hills: &[&str]) -> u32 {
+      self.sled(hills, 0, 0)
+    }
     fn sled(&self, hills: &[&str], pos: u32, trees: u32) -> u32 {
         let hill = hills.into_iter().next();
 
