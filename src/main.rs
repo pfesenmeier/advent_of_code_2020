@@ -7,6 +7,7 @@ mod password_philosophy_1;
 mod password_philosophy_2;
 mod toboggan_trajectory_1;
 mod toboggan_trajectory_2;
+mod conway_cubes_1;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -90,6 +91,7 @@ impl Challenge {
             (2, 2) => Some(password_philosophy_2::run as for<'r> fn(&'r str) -> String),
             (3, 1) => Some(toboggan_trajectory_1::run as for<'r> fn(&'r str) -> String),
             (3, 2) => Some(toboggan_trajectory_2::run as for<'r> fn(&'r str) -> String),
+            (17, 1) => Some(conway_cubes_1::run as for<'r> fn(&'r str) -> String),
             _ => None,
         }
     }
